@@ -1,238 +1,155 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+@import "tailwindcss";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Garden } from '@/components/Garden';
-import { TaskList } from '@/components/TaskList';
-import { BaseCheckIn } from '@/components/BaseCheckIn';
-import { Web3Provider } from '@/components/Web3Provider';
-import { getDailyTasks } from '@/constants/tasks';
-import { Task, Plant, GardenState } from '@/types';
-import { format } from 'date-fns';
-import { Trophy, Sparkles, Flame, BarChart3, Settings } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+@theme {
+  --font-sans: "SF Pro Display", "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-base-blue: #0052FF;
+  --color-soft-blue: #E8EFFF;
+  --color-leaf-green: #4ADE80;
+  --color-sun-yellow: #FACC15;
+  --color-fire-orange: #FB923C;
+  --color-bg-app: #F4F7FF;
+}
 
-export default function App() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [garden, setGarden] = useState<GardenState>({
-    level: 1,
-    experience: 0,
-    plants: []
-  });
-  const [streak, setStreak] = useState(0);
-  const today = format(new Date(), 'yyyy-MM-dd');
+@layer base {
+  body {
+    @apply bg-bg-app text-[#1A1A1B] antialiased;
+  }
+}
 
-  // Load state
-  useEffect(() => {
-    const savedTasks = localStorage.getItem(`tasks-${today}`);
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    } else {
-      setTasks(getDailyTasks(today));
+.vibrant-card {
+  @apply bg-white rounded-[24px] p-6 border border-soft-blue shadow-[0_4px_12px_rgba(0,82,255,0.05)];
+}
+
+.vibrant-pill {
+  @apply bg-soft-blue px-4 py-2 rounded-full flex items-center gap-2 font-semibold text-sm;
+}
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: 'Geist Variable', sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
     }
-
-    const savedGarden = localStorage.getItem('garden-state');
-    if (savedGarden) {
-      setGarden(JSON.parse(savedGarden));
-    } else {
-      // Initial plants
-      setGarden({
-        level: 1,
-        experience: 0,
-        plants: [
-          { id: 'p1', type: 'shrub', stage: 1, position: { x: 20, y: 10 } },
-          { id: 'p2', type: 'shrub', stage: 1, position: { x: 70, y: 15 } },
-        ]
-      });
+  body {
+    @apply bg-background text-foreground;
     }
-
-    const savedStreak = localStorage.getItem('streak');
-    setStreak(savedStreak ? parseInt(savedStreak) : 0);
-  }, [today]);
-
-  // Save state
-  useEffect(() => {
-    if (tasks.length > 0) {
-      localStorage.setItem(`tasks-${today}`, JSON.stringify(tasks));
+  html {
+    @apply font-sans;
     }
-    localStorage.setItem('garden-state', JSON.stringify(garden));
-  }, [tasks, garden, today]);
-
-  const toggleTask = (id: string) => {
-    setTasks(prev => prev.map(t => {
-      if (t.id === id) {
-        const newCompleted = !t.completed;
-        if (newCompleted) {
-          handleTaskCompletion(t);
-        }
-        return { ...t, completed: newCompleted };
-      }
-      return t;
-    }));
-  };
-
-  const handleTaskCompletion = (task: Task) => {
-    setGarden(prev => {
-      const newExp = prev.experience + task.points;
-      const newLevel = Math.floor(newExp / 100) + 1;
-      
-      // Grow existing plants or add new ones
-      const updatedPlants = [...prev.plants];
-      const randomPlantIndex = Math.floor(Math.random() * updatedPlants.length);
-      
-      if (updatedPlants[randomPlantIndex].stage < 3) {
-        updatedPlants[randomPlantIndex].stage += 1;
-      } else {
-        // Add new plant
-        const types: Plant['type'][] = ['flower', 'tree', 'shrub'];
-        updatedPlants.push({
-          id: `p-${Date.now()}`,
-          type: types[Math.floor(Math.random() * types.length)],
-          stage: 1,
-          position: { 
-            x: 10 + Math.random() * 80, 
-            y: 5 + Math.random() * 20 
-          }
-        });
-      }
-
-      return {
-        ...prev,
-        level: newLevel,
-        experience: newExp,
-        plants: updatedPlants
-      };
-    });
-  };
-
-  const completedCount = tasks.filter(t => t.completed).length;
-  const progress = (completedCount / tasks.length) * 100;
-
-  return (
-    <Web3Provider>
-      <div className="min-h-screen bg-bg-app font-sans text-[#1A1A1B] pb-20">
-        {/* Header */}
-        <header className="sticky top-0 z-50 bg-white border-b-2 border-soft-blue px-10 py-6">
-          <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-base-blue rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-200">
-                W
-              </div>
-              <div>
-                <h1 className="font-extrabold text-2xl tracking-tight">TinyWin</h1>
-                <span className="text-[10px] uppercase font-bold tracking-widest bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Base Mainnet</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-5">
-              <div className="vibrant-pill">
-                <span>🔥</span> {streak} Day Streak
-              </div>
-              <div className="vibrant-pill">
-                <span>✨</span> {garden.experience} Points
-              </div>
-              <button className="vibrant-pill bg-base-blue text-white hover:bg-blue-700 transition-colors">
-                Connect Wallet
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <main className="max-w-7xl mx-auto px-10 pt-8 grid grid-cols-1 lg:grid-cols-[380px_1fr_240px] gap-8">
-          {/* Column 1: Tasks */}
-          <section className="vibrant-card h-fit">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-bold">Daily Wins</h2>
-              <span className="text-xs font-bold text-slate-400">
-                {completedCount}/{tasks.length} DONE
-              </span>
-            </div>
-            
-            <TaskList tasks={tasks} onToggle={toggleTask} />
-            
-            <div className="mt-8">
-              <BaseCheckIn />
-            </div>
-          </section>
-
-          {/* Column 2: Garden View */}
-          <section className="space-y-6">
-            <div className="bg-white rounded-[32px] p-2 border-4 border-white shadow-xl overflow-hidden relative group">
-              <div className="absolute inset-0 bg-gradient-to-b from-[#E0F2FE] to-[#F0F9FF] z-0" />
-              <div className="relative z-10">
-                <Garden plants={garden.plants} />
-              </div>
-              
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 text-center">
-                <div className="bg-white/80 backdrop-blur-md px-8 py-4 rounded-2xl shadow-lg border border-white mb-4">
-                  <h3 className="text-2xl font-extrabold">The Zen Oak</h3>
-                  <p className="text-sm text-slate-500 font-medium">Grows with your consistency</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="vibrant-card">
-              <div className="flex justify-between text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
-                <span>Garden Level {garden.level}</span>
-                <span>{garden.experience % 100}% to next level</span>
-              </div>
-              <Progress value={garden.experience % 100} className="h-4 bg-soft-blue" />
-            </div>
-          </section>
-
-          {/* Column 3: Stats & Friends */}
-          <aside className="space-y-6">
-            <div className="vibrant-card p-4">
-              <h3 className="font-bold mb-4">My Week</h3>
-              <div className="grid grid-cols-7 gap-1.5">
-                {[
-                  'leaf-green', 'leaf-green', 'sun-yellow', 'leaf-green', 'fire-orange', 'leaf-green', 'slate-200'
-                ].map((color, i) => (
-                  <div 
-                    key={i} 
-                    className={`aspect-square rounded-md ${color.startsWith('slate') ? 'bg-slate-200' : `bg-${color}`}`} 
-                  />
-                ))}
-              </div>
-              <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
-                High energy weekend! Keep it up.
-              </p>
-            </div>
-
-            <div className="vibrant-card p-4 flex-1">
-              <h3 className="font-bold mb-4">Friends</h3>
-              <div className="space-y-4">
-                {[
-                  { name: 'Alex.base', wins: '2.8k', avatar: '🦊', rank: 1, color: '#FEF3C7' },
-                  { name: 'You', wins: '2.4k', avatar: '👤', rank: 2, color: '#E0E7FF', me: true },
-                  { name: 'Mila_W', wins: '2.1k', avatar: '🐹', rank: 3, color: '#FCE7F3' },
-                  { name: 'Vitalik', wins: '1.9k', avatar: '🐼', rank: 4, color: '#DCFCE7' },
-                ].map((user) => (
-                  <div key={user.name} className="flex items-center gap-3 text-sm">
-                    <span className="w-4 font-extrabold text-slate-300 text-xs">{user.rank}</span>
-                    <div 
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-sm"
-                      style={{ backgroundColor: user.color }}
-                    >
-                      {user.avatar}
-                    </div>
-                    <div className={cn("flex-1 font-bold truncate", user.me && "text-base-blue")}>
-                      {user.name}
-                    </div>
-                    <div className="text-[11px] font-bold opacity-40">{user.wins}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </aside>
-        </main>
-      </div>
-    </Web3Provider>
-  );
 }
