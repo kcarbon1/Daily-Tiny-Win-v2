@@ -1,155 +1,81 @@
-@import "tailwindcss";
+import { useAccount, useConnect, useDisconnect, useWriteContract } from 'wagmi';
+import { injected } from 'wagmi/connectors';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Wallet, CheckCircle, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
-@theme {
-  --font-sans: "SF Pro Display", "Inter", ui-sans-serif, system-ui, sans-serif;
-  
-  --color-base-blue: #0052FF;
-  --color-soft-blue: #E8EFFF;
-  --color-leaf-green: #4ADE80;
-  --color-sun-yellow: #FACC15;
-  --color-fire-orange: #FB923C;
-  --color-bg-app: #F4F7FF;
-}
+// Mock contract for demo purposes
+const CHECKIN_CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000'; // Replace with real contract
+const ABI = [
+  {
+    name: 'checkIn',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [],
+    outputs: [],
+  },
+] as const;
 
-@layer base {
-  body {
-    @apply bg-bg-app text-[#1A1A1B] antialiased;
+export function BaseCheckIn() {
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
+  const { writeContract, isPending, isSuccess, error } = useWriteContract();
+  const [hasCheckedIn, setHasCheckedIn] = useState(false);
+
+  const handleCheckIn = async () => {
+    try {
+      // In a real app, we would call the contract
+      // writeContract({
+      //   address: CHECKIN_CONTRACT_ADDRESS,
+      //   abi: ABI,
+      //   functionName: 'checkIn',
+      // });
+      
+      // For demo, we'll simulate success
+      setHasCheckedIn(true);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  if (!isConnected) {
+    return (
+      <Button 
+        onClick={() => connect({ connector: injected() })}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-2xl py-6"
+      >
+        <Wallet className="mr-2" size={20} />
+        Connect Wallet to Check-in on Base
+      </Button>
+    );
   }
-}
 
-.vibrant-card {
-  @apply bg-white rounded-[24px] p-6 border border-soft-blue shadow-[0_4px_12px_rgba(0,82,255,0.05)];
-}
-
-.vibrant-pill {
-  @apply bg-soft-blue px-4 py-2 rounded-full flex items-center gap-2 font-semibold text-sm;
-}
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
-
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
-}
-
-:root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-    }
-  body {
-    @apply bg-background text-foreground;
-    }
-  html {
-    @apply font-sans;
-    }
+  return (
+    <div className="space-y-4">
+      {hasCheckedIn ? (
+        <div className="flex items-center gap-3 text-leaf-green font-bold bg-white p-4 rounded-2xl border-2 border-leaf-green shadow-sm">
+          <CheckCircle size={24} />
+          Checked in for today!
+        </div>
+      ) : (
+        <Button 
+          onClick={handleCheckIn}
+          disabled={isPending}
+          className="w-full bg-base-blue hover:bg-blue-700 text-white rounded-full py-7 text-lg font-bold shadow-[0_10px_20px_rgba(0,82,255,0.3)] transition-all hover:scale-[1.02] active:scale-[0.98]"
+        >
+          {isPending ? (
+            <Loader2 className="mr-2 animate-spin" size={20} />
+          ) : (
+            <CheckCircle className="mr-2" size={20} />
+          )}
+          Daily Check-in
+        </Button>
+      )}
+      <p className="text-[10px] text-slate-400 text-center font-bold uppercase tracking-widest">
+        0.0001 ETH Gas • Base Mainnet
+      </p>
+    </div>
+  );
 }
